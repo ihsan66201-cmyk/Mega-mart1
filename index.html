@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#16834a">
+<title>Mega Mart - Everyday Shopping</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&display=swap');
+:root{--green:#16834a;--dark:#0e6537;--mint:#eaf7ef;--ink:#18231d;--muted:#68756d;--line:#e5ece7;--bg:#f7faf8;--orange:#ff9b35;--white:#fff;--shadow:0 12px 32px rgba(20,65,39,.09)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Arial,system-ui,sans-serif}
+body[dir=rtl]{font-family:"Noto Naskh Arabic",Tahoma,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #93d7ad;outline-offset:2px}
+.wrap{width:min(1180px,calc(100% - 36px));margin:auto}
+.announcement{background:#104f2c;color:white;text-align:center;padding:9px;font-size:12px}
+.header{background:white;position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line)}
+.headrow{display:flex;align-items:center;gap:15px;padding:14px 0}
+.logo{display:flex;align-items:center;gap:9px;font-size:22px;font-weight:900;white-space:nowrap}
+.logo-mark{background:var(--green);color:white;padding:8px 12px;border-radius:12px}
+.logo em{color:var(--green);font-style:normal}
+.search{flex:1;display:flex;background:#f5f8f6;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.search input{border:0;background:transparent;padding:12px;min-width:0;flex:1}
+.search button{border:0;background:var(--green);color:white;padding:0 18px}
+.head-actions{display:flex;gap:8px;align-items:center}
+.btn{border:0;border-radius:11px;padding:10px 15px;font-weight:750;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:.2s}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--green);color:white}
+.btn-primary:hover{background:var(--dark)}
+.btn-light{background:#edf6f0;color:var(--dark)}
+.btn-outline{background:white;border:1px solid var(--line)}
+.btn-small{padding:8px 10px;font-size:12px}
+.iconbtn{width:42px;height:42px;background:white;border:1px solid var(--line);border-radius:12px;font-size:19px;position:relative}
+.cart-count{position:absolute;right:-5px;top:-6px;background:var(--orange);border-radius:50%;min-width:19px;height:19px;font-size:11px;display:grid;place-items:center}
+.nav{display:flex;gap:22px;padding:0 0 12px;overflow:auto;white-space:nowrap;font-size:13px;color:#536258}
+.nav a:hover{color:var(--green)}
+.hero{padding:25px 0}
+.hero-card{background:linear-gradient(110deg,#e5f6e9,#f2fbf3,#d2efda);border-radius:24px;padding:38px 5%;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;box-shadow:var(--shadow)}
+.eyebrow{color:var(--green);font-size:12px;font-weight:900;letter-spacing:1px}
+.hero h1{font-size:clamp(35px,5vw,58px);line-height:1.15;margin:12px 0}
+.hero h1 span{color:var(--green)}
+.hero p{color:#52675a;max-width:440px}
+.hero-art{display:grid;place-items:center;min-height:230px}
+.produce-circle{width:240px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:#d2edda;font-size:120px;box-shadow:var(--shadow)}
+.hero-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 25px}
+.benefit{background:white;border:1px solid var(--line);border-radius:14px;padding:14px}
+.benefit strong{display:block;font-size:13px}
+.benefit small{color:var(--muted);font-size:11px}
+.section{padding:15px 0 28px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px}
+.section-head h2{margin:0;font-size:25px}
+.section-head p{color:var(--muted);font-size:13px;margin:4px 0}
+.categories{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.category{background:white;border:1px solid var(--line);border-radius:15px;padding:16px 8px;text-align:center}
+.category:hover{border-color:var(--green)}
+.cat-icon{font-size:30px}
+.category strong{display:block;font-size:12px}
+.deal-strip{background:#123e27;color:white;border-radius:18px;padding:22px;display:flex;justify-content:space-between;align-items:center;margin:12px 0 22px;gap:12px}
+.deal-strip h3{margin:0 0 4px;font-size:22px}
+.deal-strip p{margin:0;color:#d1e8d8;font-size:13px}
+.deal-pill{background:#ffcf73;color:#392509;padding:9px 13px;border-radius:30px;font-weight:900;white-space:nowrap}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+.toolbar input,.toolbar select{border:1px solid var(--line);background:white;border-radius:10px;padding:10px;min-width:0}
+.toolbar input{flex:1}
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.product{background:white;border:1px solid var(--line);border-radius:16px;padding:12px;min-width:0;transition:.2s}
+.product:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.product-art{height:145px;border-radius:12px;background:linear-gradient(135deg,#f4f8f5,#eaf4ed);display:grid;place-items:center;font-size:65px;overflow:hidden;position:relative}
+.product-art img{width:100%;height:100%;object-fit:cover}
+.sale{position:absolute;top:8px;left:8px;background:#ffebd7;color:#994b00;padding:4px 7px;border-radius:6px;font-size:10px;font-weight:900}
+.product-cat{color:var(--green);font-size:10px;font-weight:900;margin-top:12px}
+.product h3{font-size:14px;margin:5px 0;min-height:35px}
+.product-meta{font-size:11px;color:var(--muted)}
+.price-row{display:flex;gap:8px;align-items:center;margin:10px 0}
+.price{font-size:18px;font-weight:900;direction:ltr}
+.old-price{font-size:12px;color:#8c978f;text-decoration:line-through;direction:ltr}
+.product-options{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0}
+.product-options label{font-size:11px;color:var(--muted);font-weight:750;display:grid;gap:4px}
+.product-options input,.product-options select{width:100%;min-width:0;border:1px solid var(--line);border-radius:8px;padding:8px;background:white}
+.add-row{display:flex;gap:7px}
+.add-row .btn{flex:1}
+.empty{grid-column:1/-1;text-align:center;padding:40px 15px;background:white;border:1px dashed #cbd9ce;border-radius:15px;color:var(--muted)}
+.promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.promo{border-radius:18px;padding:24px;min-height:150px;display:flex;justify-content:space-between;align-items:center}
+.promo h3{margin:8px 0;font-size:22px}
+.promo p{font-size:13px;color:#536258}
+.promo-emoji{font-size:60px}
+.promo-one{background:#fff0d9}
+.promo-two{background:#e0f3e7}
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.review{background:white;border:1px solid var(--line);padding:18px;border-radius:15px}
+.stars{color:#f4a52e}
+.review p{font-size:13px;color:#526057}
+.newsletter{background:#e8f5ec;border-radius:20px;padding:25px;display:flex;justify-content:space-between;gap:20px;align-items:center;margin:20px 0 35px}
+.newsletter h2{margin:0 0 5px}
+.newsletter p{color:var(--muted);font-size:13px}
+.newsletter form{display:flex;gap:8px;max-width:440px;width:100%}
+.newsletter input{min-width:0;flex:1;border:1px solid #d0e5d6;border-radius:10px;padding:12px}
+.footer{background:#11291b;color:#d5e4d9;padding:35px 0 20px}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:25px}
+.footer p,.footer a{color:#a8beb0;font-size:12px}
+.footer h4{color:white;margin:4px 0 12px}
+.footer-links{display:grid;gap:8px}
+.footer-bottom{border-top:1px solid #31513c;margin-top:25px;padding-top:15px;font-size:11px;color:#a8beb0;display:flex;justify-content:space-between}
+.whatsapp{position:fixed;right:18px;bottom:18px;z-index:40;background:#20bd5a;color:white;border:0;border-radius:30px;padding:13px 17px;font-weight:850;box-shadow:var(--shadow)}
+.overlay{position:fixed;inset:0;background:#10241980;z-index:60;display:none;justify-content:flex-end}
+.overlay.show{display:flex}
+.drawer{width:min(480px,100%);height:100%;background:white;padding:20px;overflow:auto}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:13px}
+.drawer-head h2{margin:0}
+.close{border:0;background:#f0f5f1;border-radius:9px;width:38px;height:38px;font-size:20px}
+.cart-items{display:grid;gap:12px;margin:17px 0}
+.cart-item{display:grid;grid-template-columns:55px 1fr auto;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px}
+.cart-thumb{width:55px;height:55px;background:var(--mint);border-radius:10px;display:grid;place-items:center;font-size:27px}
+.cart-item h4{font-size:13px;margin:0}
+.cart-size{font-size:12px;color:var(--green);font-weight:800}
+.qty{display:flex;align-items:center;gap:7px;margin-top:7px;flex-wrap:wrap}
+.qty button{width:26px;height:26px;border:1px solid var(--line);background:white;border-radius:7px}
+.cart-total{border-top:1px solid var(--line);padding-top:13px}
+.total-line{display:flex;justify-content:space-between;margin:7px 0;font-size:13px;color:#526057}
+.total-line.grand{font-size:19px;font-weight:900;color:var(--ink)}
+.cart-total>.btn{width:100%;margin-top:9px}
+.field{display:grid;gap:6px;margin:12px 0}
+.field label{font-size:12px;font-weight:800;color:#4b5b50}
+.field input,.field select,.field textarea{width:100%;border:1px solid #dce6df;border-radius:10px;padding:11px;background:white}
+.field textarea{min-height:70px}
+.notice{background:#fff5df;border:1px solid #f4dfae;color:#74501c;padding:12px;border-radius:10px;font-size:12px;margin:12px 0}
+.success-note{background:#e8f7ec;border:1px solid #b9e2c5;color:#205e36;padding:12px;border-radius:10px;font-size:13px}
+.admin-modal{position:fixed;inset:0;z-index:80;background:#10241999;display:none;place-items:center;padding:15px}
+.admin-modal.show{display:grid}
+.admin-panel{background:white;width:min(1050px,100%);max-height:92vh;overflow:auto;border-radius:18px;padding:22px}
+.admin-top{display:flex;justify-content:space-between;align-items:center}
+.admin-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.admin-tabs button{border:1px solid var(--line);background:white;padding:9px 12px;border-radius:9px;font-weight:750}
+.admin-tabs button.active{background:var(--green);color:white}
+.admin-content{min-height:200px}
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:#f2f8f4;border-radius:12px;padding:15px}
+.stat strong{display:block;font-size:23px}
+.admin-product-form{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}
+.admin-product-form input,.admin-product-form select{width:100%;min-width:0;padding:10px;border:1px solid var(--line);border-radius:9px}
+.admin-table-wrap{overflow:auto}
+.admin-table{width:100%;border-collapse:collapse;font-size:12px;min-width:600px}
+.admin-table th,.admin-table td{text-align:start;border-bottom:1px solid var(--line);padding:10px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:#173b25;color:white;padding:12px 18px;border-radius:11px;z-index:100;opacity:0;pointer-events:none;transition:.25s;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+[dir=rtl] .headrow,[dir=rtl] .head-actions,[dir=rtl] .hero-buttons{direction:rtl}
+[dir=rtl] .cart-count{right:auto;left:-5px}
+[dir=rtl] .drawer{direction:rtl}
+[dir=rtl] input,[dir=rtl] select,[dir=rtl] textarea{text-align:right}
+[dir=rtl] .price,[dir=rtl] .old-price{direction:ltr;text-align:left}
+@media(max-width:900px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.categories{grid-template-columns:repeat(3,1fr)}.benefits{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.wrap{width:calc(100% - 22px)}.headrow{flex-wrap:wrap;gap:9px}.logo{flex:1;font-size:19px}.search{order:3;flex-basis:100%}.head-actions{gap:5px}.head-actions .btn{padding:8px}.nav{gap:15px}.hero-card{grid-template-columns:1fr;padding:25px 20px}.hero h1{font-size:39px}.hero-art{min-height:170px}.produce-circle{width:180px;font-size:90px}.benefits{gap:8px}.benefit{padding:10px}.categories{grid-template-columns:repeat(3,1fr);gap:7px}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.product{padding:9px}.product-art{height:115px;font-size:52px}.product h3{font-size:13px}.product-options{grid-template-columns:1fr}.add-row .btn{padding:8px 5px;font-size:11px}.promo-grid,.reviews{grid-template-columns:1fr}.newsletter{display:block;padding:20px}.newsletter form{margin-top:15px}.footer-grid{grid-template-columns:1fr 1fr;gap:18px}.footer-grid>div:first-child{grid-column:1/-1}.footer-bottom{flex-direction:column;gap:7px}.admin-product-form{grid-template-columns:1fr 1fr}.admin-stats{grid-template-columns:repeat(2,1fr)}.deal-strip{padding:17px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="announcement" data-t="announcement"></div>
+<header class="header"><div class="wrap">
+ <div class="headrow">
+  <a class="logo" href="#"><span class="logo-mark">🛒</span><span>Mega <em>Mart</em></span></a>
+  <form class="search" id="searchForm"><input id="searchInput" data-ph="searchPlaceholder"><button type="submit" data-t="search"></button></form>
+  <div class="head-actions">
+   <button class="btn btn-light btn-small" id="languageToggle">اردو</button>
+   <button class="btn btn-light" id="accountBtn" data-t="account"></button>
+   <button class="iconbtn" id="cartOpen">🛍️<span class="cart-count" id="cartCount">0</span></button>
+  </div>
+ </div>
+ <nav class="nav">
+  <a href="#categories" data-t="categories"></a><a href="#products" data-t="allProducts"></a>
+  <a href="#deals" data-t="deals"></a><a href="#why-us" data-t="why"></a>
+  <a href="#reviews" data-t="reviews"></a><a href="#footer" data-t="contact"></a>
+  <a href="#" id="adminOpen" data-t="admin"></a>
+ </nav>
+</div></header>
+<main>
+<section class="hero"><div class="wrap"><div class="hero-card">
+ <div><div class="eyebrow" data-t="eyebrow"></div><h1 data-t="heroTitle"></h1>
+ <p data-t="heroText"></p><div class="hero-buttons">
+ <a class="btn btn-primary" href="#products" data-t="shop"></a>
+ <a class="btn btn-outline" href="#categories" data-t="explore"></a></div></div>
+ <div class="hero-art"><div class="produce-circle">🛒</div></div>
+</div></div></section>
+<section class="wrap" id="why-us"><div class="benefits">
+ <div class="benefit">🚚 <div><strong data-t="benefit1"></strong><small data-t="benefit1s"></small></div></div>
+ <div class="benefit">🌱 <div><strong data-t="benefit2"></strong><small data-t="benefit2s"></small></div></div>
+ <div class="benefit">💚 <div><strong data-t="benefit3"></strong><small data-t="benefit3s"></small></div></div>
+ <div class="benefit">💬 <div><strong data-t="benefit4"></strong><small data-t="benefit4s"></small></div></div>
+</div></section>
+<section class="section wrap" id="categories"><div class="section-head"><div><h2 data-t="categories"></h2><p data-t="categoryIntro"></p></div></div><div class="categories" id="categoryGrid"></div></section>
+<section class="wrap" id="deals"><div class="deal-strip"><div><h3 data-t="dealTitle"></h3><p data-t="dealText"></p></div><div class="deal-pill" data-t="dealPill"></div></div>
+<div class="promo-grid">
+ <div class="promo promo-one"><div><div class="eyebrow" data-t="kitchen"></div><h3 data-t="stockUp"></h3><p data-t="pantryText"></p><a class="text-link" href="#products" data-t="shopPantry"></a></div><div class="promo-emoji">🫙</div></div>
+ <div class="promo promo-two"><div><div class="eyebrow" data-t="homeEssentials"></div><h3 data-t="homeShine"></h3><p data-t="cleanText"></p><a class="text-link" href="#products" data-t="shopHome"></a></div><div class="promo-emoji">🧺</div></div>
+</div></section>
+<section class="section wrap" id="products"><div class="section-head"><div><h2 data-t="popular"></h2><p data-t="popularIntro"></p></div><span class="text-link" id="resultCount"></span></div>
+<div class="toolbar">
+ <input id="inlineSearch" data-ph="findProduct">
+ <select id="categoryFilter"></select>
+ <select id="sortFilter"><option value="featured" data-t="featured"></option><option value="price-low" data-t="priceLow"></option><option value="price-high" data-t="priceHigh"></option><option value="name" data-t="nameSort"></option></select>
+ <select id="dealFilter"><option value="all" data-t="allProducts"></option><option value="sale" data-t="onSale"></option><option value="stock" data-t="inStockFilter"></option></select>
+</div><div class="products" id="productGrid"></div></section>
+<section class="section wrap" id="reviews"><div class="section-head"><div><h2 data-t="reviews"></h2><p data-t="reviewsIntro"></p></div></div><div class="reviews">
+ <article class="review"><div class="stars">★★★★★</div><p data-t="review1"></p><strong>— Ayesha K.</strong></article>
+ <article class="review"><div class="stars">★★★★★</div><p data-t="review2"></p><strong>— Hamza R.</strong></article>
+ <article class="review"><div class="stars">★★★★★</div><p data-t="review3"></p><strong>— Sana M.</strong></article>
+</div></section>
+<section class="wrap"><div class="newsletter"><div><h2 data-t="newsletterTitle"></h2><p data-t="newsletterText"></p></div>
+<form id="newsletterForm"><input type="email" data-ph="emailPlaceholder" required><button class="btn btn-primary" data-t="subscribe"></button></form></div></section>
+</main>
+<footer class="footer" id="footer"><div class="wrap"><div class="footer-grid">
+ <div><a class="logo" href="#"><span class="logo-mark">🛒</span><span>Mega <em>Mart</em></span></a><p data-t="footerIntro"></p><p>☎ <span id="footerPhone"></span></p></div>
+ <div><h4 data-t="shop"></h4><div class="footer-links"><a href="#categories" data-t="categories"></a><a href="#products" data-t="popular"></a><a href="#deals" data-t="deals"></a></div></div>
+ <div><h4 data-t="customerCare"></h4><div class="footer-links"><a href="#" id="footerWhatsApp" data-t="whatsappSupport"></a><a href="#footer" data-t="deliveryInfo"></a></div></div>
+ <div><h4 data-t="paymentMethods"></h4><div class="footer-links"><span data-t="cod"></span><span data-t="whatsappConfirm"></span></div></div>
+</div><div class="footer-bottom"><span>© <span id="year"></span> Mega Mart. <span data-t="rights"></span></span><span data-t="madePakistan"></span></div></div></footer>
+<button class="whatsapp" id="floatingWhatsApp" data-t="whatsappUs"></button>
+
+<div class="overlay" id="cartOverlay"><aside class="drawer"><div class="drawer-head"><h2 data-t="basket"></h2><button class="close" data-close="cartOverlay">×</button></div><div id="cartBody"></div></aside></div>
+<div class="overlay" id="checkoutOverlay"><aside class="drawer"><div class="drawer-head"><h2 data-t="checkout"></h2><button class="close" data-close="checkoutOverlay">×</button></div><div id="checkoutBody"></div></aside></div>
+<div class="overlay" id="accountOverlay"><aside class="drawer">
+ <div class="drawer-head"><h2 data-t="customerAccount"></h2><button class="close" data-close="accountOverlay">×</button></div>
+ <div class="notice" data-t="demoAccountNotice"></div>
+ <div class="admin-tabs"><button class="active" data-account-mode="signup" data-t="signup"></button><button data-account-mode="login" data-t="signin"></button></div>
+ <form id="accountForm">
+  <div class="field" id="accountNameField"><label data-t="fullName"></label><input id="accountName" required></div>
+  <div class="field"><label data-t="email"></label><input id="accountEmail" type="email" required></div>
+  <div class="field" id="accountPhoneField"><label data-t="phone"></label><input id="accountPhone" required></div>
+  <div class="field"><label data-t="password"></label><input id="accountPassword" type="password" required minlength="4"></div>
+  <button class="btn btn-primary" style="width:100%" id="accountSubmit" data-t="signup"></button>
+ </form><div id="accountMessage"></div><button class="btn btn-light" id="signOutBtn" style="display:none;width:100%;margin-top:10px" data-t="signout"></button>
+</aside></div>
+<div class="admin-modal" id="adminModal"><div class="admin-panel">
+ <div class="admin-top"><div><div class="eyebrow" data-t="storeControls"></div><h2>Mega Mart Admin</h2></div><button class="close" id="adminClose">×</button></div>
+ <div class="notice" data-t="adminNotice"></div>
+ <div class="admin-tabs"><button class="active" data-tab="overview" data-t="overview"></button><button data-tab="inventory" data-t="inventory"></button><button data-tab="settings" data-t="settings"></button><button data-tab="orders" data-t="orders"></button></div>
+ <div class="admin-content" id="adminContent"></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const money=n=>'Rs. '+Math.round(Number(n)||0).toLocaleString('en-PK');
+let language=localStorage.getItem('megamart_language_v1')||'en';
+const T={
+en:{
+announcement:'🌿 Fresh picks, fair prices — free delivery on orders over Rs. 3,000*',search:'Search',searchPlaceholder:'Search products...',findProduct:'Find a product...',categories:'Shop by category',allProducts:'All products',deals:'Deals & offers',why:'Why Mega Mart?',reviews:'Customer reviews',contact:'Contact',admin:'Admin ↗',eyebrow:'Your neighbourhood mega store',heroTitle:'Good things.<br><span>Great prices.</span>',heroText:'From daily groceries to home essentials, find the things you need — all in one convenient place.',shop:'Shop products →',explore:'Explore categories',benefit1:'Convenient delivery',benefit1s:'Right to your doorstep',benefit2:'Quality essentials',benefit2s:'Carefully selected products',benefit3:'Everyday value',benefit3s:'Deals for your budget',benefit4:'Friendly support',benefit4s:"We're here to help",categoryIntro:'Everything on your list, in one place.',dealTitle:'Little prices. Big savings.',dealText:'Explore special picks and deals for everyday shopping.',dealPill:'UP TO 25% OFF',kitchen:'Kitchen favourites',stockUp:'Stock up & save',pantryText:'Pantry basics for delicious meals.',shopPantry:'Shop pantry →',homeEssentials:'Home essentials',homeShine:'Make home shine',cleanText:'Cleaning and home-care essentials.',shopHome:'Shop home care →',popular:'Popular picks',popularIntro:'Everyday essentials customers love.',featured:'Featured first',priceLow:'Price: low to high',priceHigh:'Price: high to low',nameSort:'Name: A–Z',onSale:'On sale',inStockFilter:'In stock',reviewsIntro:'Shopping should feel simple and dependable.',review1:'“A convenient place to find the household basics we need.”',review2:'“I like having groceries and home essentials together.”',review3:'“Simple ordering and helpful support.”',newsletterTitle:'Good deals, delivered to your inbox.',newsletterText:'Sign up for store updates and special offers.',emailPlaceholder:'Your email address',subscribe:'Sign me up',footerIntro:'Your everyday shopping partner in Pakistan.',customerCare:'Customer care',whatsappSupport:'WhatsApp support',deliveryInfo:'Delivery information',paymentMethods:'Payment methods',cod:'Cash on Delivery',whatsappConfirm:'WhatsApp confirmation',rights:'All rights reserved.',madePakistan:'Made for everyday shopping in Pakistan 🇵🇰',whatsappUs:'☏ WhatsApp us',basket:'Your basket',checkout:'Checkout',customerAccount:'Customer account',demoAccountNotice:'Demo account details are saved only in this browser. Do not use a real password.',signup:'Create account',signin:'Sign in',fullName:'Full name',email:'Email address',phone:'Phone number',password:'Password (demo only)',signout:'Sign out',storeControls:'Store controls',adminNotice:'Demo admin access only. Data is saved in this browser. Default password: ChangeMe-2026. Change it before sharing your site.',overview:'Overview',inventory:'Inventory',settings:'Settings',orders:'Orders',quantity:'Quantity',selectSize:'Select size',chooseSize:'Choose size',inStock:'In stock',outStock:'Out of stock',add:'Add to cart',unavailable:'Unavailable',reviewsButton:'Reviews',noResults:'No products found',empty:'Your basket is empty',start:'Start shopping',subtotal:'Subtotal',delivery:'Delivery',total:'Total',free:'FREE',continue:'Continue to checkout',whatsappOrder:'Order via WhatsApp',remove:'Remove',size:'Size',customerName:'Full name',address:'Complete delivery address',city:'City',payment:'Payment method',instructions:'Delivery instructions',orderRequest:'Create order request',orderNotice:'Please check your details. This is an order request, not a confirmed order.',orderSuccess:'Your order request has been saved',sendOrder:'Send order on WhatsApp',finish:'Continue shopping',back:'Back',accountRequired:'Please sign in before shopping.',chooseFirst:'Please select a size first.',stockError:'Not enough stock available.',added:'Added to your basket.',phoneError:'Enter a valid Pakistani mobile number.',requiredError:'Complete all required fields.',stockChanged:'Stock changed. Please review your basket.',orderSaved:'Order request created.',signInReview:'Sign in before reviewing.',emailExists:'Email already registered. Please sign in.',loginError:'Email or password is incorrect.',signedIn:'You are signed in.',signedOut:'Signed out.',save:'Save',edit:'Edit',delete:'Delete',productName:'Product name (English)',productNameUr:'Product name (Urdu)',descriptionEn:'Description (English)',descriptionUr:'Description (Urdu)',category:'Category',price:'Price (Rs.)',oldPrice:'Old price',unit:'Unit, e.g. 1 kg',stock:'General stock',emoji:'Emoji',image:'Image URL (optional)',sizeType:'Size type',noSizes:'No sizes required',clothing:'Clothing sizes',shoes:'Shoe sizes',kids:'Kids sizes',custom:'Custom sizes',sizeStock:'Size options and stock',sizeExample:'Enter sizes like XS:5, S:10, M:8, L:6',featuredLabel:'Featured product',addProduct:'Add product',saveChanges:'Save changes',cancel:'Cancel',product:'Product',actions:'Actions',storeSettings:'Store settings',whatsappNumber:'WhatsApp number (digits only)',displayPhone:'Display phone number',adminPassword:'Admin password',deliveryCharge:'Delivery charge',freeFrom:'Free delivery from',minimumOrder:'Minimum order',savedOrders:'Saved orders',noOrders:'No orders saved yet.',customer:'Customer',items:'Items',status:'Status',pending:'Pending confirmation',confirmed:'Confirmed',processing:'Processing',shipped:'Shipped',delivered:'Delivered',cancelled:'Cancelled',passwordPrompt:'Admin password:',wrongPassword:'Incorrect admin password.',confirmDelete:'Delete this product?',productUpdated:'Product updated.',productAdded:'Product added.',productDeleted:'Product deleted.',settingsSaved:'Settings saved.',statusUpdated:'Order status updated.',newsletterThanks:'Thank you for subscribing!',languageChanged:'Language changed to English',urduChanged:'زبان اردو میں تبدیل ہوگئی',currency:'Rs.'
+},
+ur:{
+announcement:'🌿 تازہ اشیاء، مناسب قیمتیں — 3,000 روپے سے زیادہ کے آرڈر پر مفت ڈیلیوری',search:'تلاش',searchPlaceholder:'مصنوعات تلاش کریں...',findProduct:'مصنوعات تلاش کریں...',categories:'کیٹیگریز',allProducts:'تمام مصنوعات',deals:'آفرز اور رعایتیں',why:'میگا مارٹ کیوں؟',reviews:'صارفین کی آراء',contact:'رابطہ',admin:'ایڈمن ↗',eyebrow:'آپ کا اپنا میگا اسٹور',heroTitle:'اچھی چیزیں۔<br><span>بہترین قیمتیں۔</span>',heroText:'روزمرہ کے راشن سے لے کر گھر کی ضروریات تک، اپنی تمام پسندیدہ چیزیں ایک ہی جگہ سے خریدیں۔',shop:'مصنوعات خریدیں ←',explore:'کیٹیگریز دیکھیں',benefit1:'آسان ڈیلیوری',benefit1s:'آپ کے گھر کی دہلیز تک',benefit2:'معیاری اشیاء',benefit2s:'احتیاط سے منتخب کردہ مصنوعات',benefit3:'روزمرہ کی بچت',benefit3s:'آپ کے بجٹ کے مطابق آفرز',benefit4:'بہترین مدد',benefit4s:'ہم آپ کی مدد کے لیے موجود ہیں',categoryIntro:'آپ کی ضرورت کی ہر چیز ایک ہی جگہ پر۔',dealTitle:'کم قیمتیں، زیادہ بچت۔',dealText:'روزمرہ خریداری کے لیے خاص مصنوعات اور آفرز دیکھیں۔',dealPill:'25 فیصد تک رعایت',kitchen:'باورچی خانے کی پسندیدہ اشیاء',stockUp:'خریداری کریں اور بچت پائیں',pantryText:'مزیدار کھانوں کے لیے ضروری اشیاء۔',shopPantry:'راشن خریدیں ←',homeEssentials:'گھر کی ضروری اشیاء',homeShine:'گھر کو چمکائیں',cleanText:'صفائی اور گھر کی دیکھ بھال کا سامان۔',shopHome:'گھریلو سامان خریدیں ←',popular:'مشہور مصنوعات',popularIntro:'روزمرہ کی پسندیدہ اور ضروری اشیاء۔',featured:'نمایاں مصنوعات پہلے',priceLow:'قیمت: کم سے زیادہ',priceHigh:'قیمت: زیادہ سے کم',nameSort:'نام کے مطابق',onSale:'رعایتی مصنوعات',inStockFilter:'دستیاب مصنوعات',reviewsIntro:'خریداری آسان اور قابلِ اعتماد ہونی چاہیے۔',review1:'“گھر کی ضروری اشیاء خریدنے کے لیے ایک بہترین جگہ ہے۔”',review2:'“مجھے اچھا لگتا ہے کہ راشن اور گھریلو سامان ایک ہی جگہ مل جاتا ہے۔”',review3:'“آرڈر کرنا آسان ہے اور مدد بھی اچھی ملتی ہے۔”',newsletterTitle:'بہترین آفرز کی اطلاع اپنے ای میل پر حاصل کریں۔',newsletterText:'اسٹور کی نئی خبروں اور خصوصی آفرز کے لیے سبسکرائب کریں۔',emailPlaceholder:'اپنا ای میل ایڈریس لکھیں',subscribe:'سبسکرائب کریں',footerIntro:'پاکستان میں آپ کی روزمرہ خریداری کا ساتھی۔',customerCare:'صارفین کی مدد',whatsappSupport:'واٹس ایپ مدد',deliveryInfo:'ڈیلیوری کی معلومات',paymentMethods:'ادائیگی کے طریقے',cod:'گھر پر نقد ادائیگی',whatsappConfirm:'واٹس ایپ پر تصدیق',rights:'تمام حقوق محفوظ ہیں۔',madePakistan:'پاکستان میں روزمرہ خریداری کے لیے بنایا گیا 🇵🇰',whatsappUs:'☏ واٹس ایپ کریں',basket:'آپ کی خریداری کی ٹوکری',checkout:'آرڈر مکمل کریں',customerAccount:'صارف کا اکاؤنٹ',demoAccountNotice:'اکاؤنٹ کی معلومات صرف اسی براؤزر میں محفوظ ہوتی ہیں۔ اپنا اصل پاس ورڈ استعمال نہ کریں۔',signup:'اکاؤنٹ بنائیں',signin:'سائن اِن کریں',fullName:'پورا نام',email:'ای میل ایڈریس',phone:'فون نمبر',password:'پاس ورڈ (صرف ڈیمو)',signout:'سائن آؤٹ',storeControls:'اسٹور کا کنٹرول',adminNotice:'یہ صرف ڈیمو ایڈمن پینل ہے۔ ڈیٹا اسی براؤزر میں محفوظ ہوتا ہے۔ ابتدائی پاس ورڈ ChangeMe-2026 ہے۔ ویب سائٹ شیئر کرنے سے پہلے اسے تبدیل کریں۔',overview:'جائزہ',inventory:'مصنوعات کا اسٹاک',settings:'ترتیبات',orders:'آرڈرز',quantity:'تعداد',selectSize:'سائز منتخب کریں',chooseSize:'سائز منتخب کریں',inStock:'اسٹاک موجود ہے',outStock:'اسٹاک ختم ہے',add:'ٹوکری میں شامل کریں',unavailable:'دستیاب نہیں',reviewsButton:'آراء',noResults:'کوئی مصنوعات نہیں ملیں',empty:'آپ کی ٹوکری خالی ہے',start:'خریداری شروع کریں',subtotal:'ذیلی رقم',delivery:'ڈیلیوری',total:'کل رقم',free:'مفت',continue:'آرڈر مکمل کریں',whatsappOrder:'واٹس ایپ کے ذریعے آرڈر کریں',remove:'حذف کریں',size:'سائز',customerName:'پورا نام',address:'مکمل پتہ',city:'شہر',payment:'ادائیگی کا طریقہ',instructions:'ڈیلیوری کی ہدایات',orderRequest:'آرڈر کی درخواست بھیجیں',orderNotice:'اپنی معلومات چیک کریں۔ یہ آرڈر کی درخواست ہے، حتمی تصدیق نہیں۔',orderSuccess:'آپ کی آرڈر درخواست محفوظ ہوگئی ہے',sendOrder:'واٹس ایپ پر آرڈر بھیجیں',finish:'خریداری جاری رکھیں',back:'واپس جائیں',accountRequired:'خریداری سے پہلے براہِ کرم سائن اِن کریں۔',chooseFirst:'براہِ کرم پہلے سائز منتخب کریں۔',stockError:'اتنا اسٹاک دستیاب نہیں ہے۔',added:'آپ کی ٹوکری میں شامل ہوگیا۔',phoneError:'پاکستان کا درست موبائل نمبر درج کریں۔',requiredError:'تمام ضروری خانے پُر کریں۔',stockChanged:'اسٹاک تبدیل ہوگیا ہے۔ اپنی ٹوکری دوبارہ چیک کریں۔',orderSaved:'آرڈر کی درخواست تیار ہوگئی۔',signInReview:'رائے دینے سے پہلے سائن اِن کریں۔',emailExists:'یہ ای میل پہلے سے رجسٹرڈ ہے۔ سائن اِن کریں۔',loginError:'ای میل یا پاس ورڈ درست نہیں ہے۔',signedIn:'آپ سائن اِن ہوگئے ہیں۔',signedOut:'آپ سائن آؤٹ ہوگئے ہیں۔',save:'محفوظ کریں',edit:'ترمیم',delete:'حذف کریں',productName:'مصنوعات کا نام (انگریزی)',productNameUr:'مصنوعات کا نام (اردو)',descriptionEn:'تفصیل (انگریزی)',descriptionUr:'تفصیل (اردو)',category:'کیٹیگری',price:'قیمت (روپے)',oldPrice:'پہلی قیمت',unit:'پیمانہ، مثلاً 1 کلو',stock:'عام اسٹاک',emoji:'ایموجی',image:'تصویر کا لنک (اختیاری)',sizeType:'سائز کی قسم',noSizes:'سائز کی ضرورت نہیں',clothing:'کپڑوں کے سائز',shoes:'جوتوں کے سائز',kids:'بچوں کے سائز',custom:'اپنی مرضی کے سائز',sizeStock:'سائز اور اسٹاک',sizeExample:'مثال: XS:5, S:10, M:8, L:6',featuredLabel:'نمایاں مصنوعات',addProduct:'مصنوعات شامل کریں',saveChanges:'تبدیلیاں محفوظ کریں',cancel:'منسوخ کریں',product:'مصنوعات',actions:'اختیارات',storeSettings:'اسٹور کی ترتیبات',whatsappNumber:'واٹس ایپ نمبر (صرف ہندسے)',displayPhone:'دکھانے کے لیے فون نمبر',adminPassword:'ایڈمن پاس ورڈ',deliveryCharge:'ڈیلیوری چارج',freeFrom:'مفت ڈیلیوری کی حد',minimumOrder:'کم از کم آرڈر',savedOrders:'محفوظ شدہ آرڈرز',noOrders:'ابھی کوئی آرڈر محفوظ نہیں ہے۔',customer:'صارف',items:'اشیاء',status:'حیثیت',pending:'تصدیق باقی ہے',confirmed:'تصدیق ہوگئی',processing:'تیاری جاری ہے',shipped:'بھیج دیا گیا',delivered:'پہنچا دیا گیا',cancelled:'منسوخ',passwordPrompt:'ایڈمن پاس ورڈ:',wrongPassword:'ایڈمن پاس ورڈ غلط ہے۔',confirmDelete:'کیا آپ یہ پروڈکٹ حذف کرنا چاہتے ہیں؟',productUpdated:'مصنوعات اپ ڈیٹ ہوگئی۔',productAdded:'مصنوعات شامل ہوگئی۔',productDeleted:'مصنوعات حذف ہوگئی۔',settingsSaved:'ترتیبات محفوظ ہوگئیں۔',statusUpdated:'آرڈر کی حیثیت اپ ڈیٹ ہوگئی۔',newsletterThanks:'سبسکرائب کرنے کا شکریہ!',languageChanged:'زبان انگریزی میں تبدیل ہوگئی',urduChanged:'زبان اردو میں تبدیل ہوگئی',currency:'روپے'
+}
+};
+const tr=k=>T[language][k]??k;
+function setText(el,key){el.innerHTML=tr(key)}
+function applyLanguage(){
+ document.documentElement.lang=language;
+ document.documentElement.dir=language==='ur'?'rtl':'ltr';
+ document.body.dir=document.documentElement.dir;
+ document.querySelectorAll('[data-t]').forEach(el=>setText(el,el.dataset.t));
+ document.querySelectorAll('[data-ph]').forEach(el=>el.placeholder=tr(el.dataset.ph));
+ $('languageToggle').textContent=language==='ur'?'English':'اردو';
+ renderCategories();renderProducts();renderCart();
+ if($('checkoutOverlay').classList.contains('show'))renderCheckout();
+ if($('adminModal').classList.contains('show'))renderAdmin();
+ if($('accountOverlay').classList.contains('show'))renderAccountMode();
+}
+const CATEGORIES=[
+ ['Fruits & Vegetables','پھل اور سبزیاں','🥦'],['Grocery & Staples','کریانہ اور بنیادی اشیاء','🛒'],
+ ['Rice, Flour & Pulses','چاول، آٹا اور دالیں','🌾'],['Oil, Ghee & Spices','تیل، گھی اور مصالحہ جات','🫙'],
+ ['Dairy & Eggs','دودھ اور انڈے','🥛'],['Bakery & Biscuits','بیکری اور بسکٹ','🍞'],
+ ['Meat & Frozen','گوشت اور منجمد اشیاء','🍗'],['Snacks & Sweets','نمکو اور مٹھائیاں','🍫'],
+ ['Beverages','مشروبات','🧃'],['Personal Care','ذاتی نگہداشت','🧴'],
+ ['Beauty & Skincare','خوبصورتی اور جلد کی دیکھ بھال','🧖'],['Baby Products','بچوں کی مصنوعات','🍼'],
+ ['Cleaning Supplies','صفائی کا سامان','🧽'],['Household & Kitchen','گھریلو اور باورچی خانے کا سامان','🏡'],
+ ['Stationery','اسٹیشنری','✏️'],['Electronics','الیکٹرانکس','🔌'],
+ ['Mobile Accessories','موبائل کی لوازمات','📱'],['Clothing & Fashion','کپڑے اور فیشن','👕'],
+ ['Toys & Kids','کھلونے اور بچوں کا سامان','🧸'],['Pet Supplies','پالتو جانوروں کا سامان','🐾']
+];
+const seed=[
+[101,'Fresh Bananas','تازہ کیلے','Fruits & Vegetables',180,210,'1 dozen','ایک درجن','🍌',35],
+[102,'Red Apples','سرخ سیب','Fruits & Vegetables',320,360,'1 kg','1 کلو', '🍎',22],
+[103,'Fresh Tomatoes','تازہ ٹماٹر','Fruits & Vegetables',140,0,'1 kg','1 کلو','🍅',28],
+[104,'Basmati Rice','باسمتی چاول','Rice, Flour & Pulses',460,520,'1 kg','1 کلو','🍚',40],
+[105,'Wheat Flour (Atta)','گندم کا آٹا','Rice, Flour & Pulses',180,0,'1 kg','1 کلو','🌾',55],
+[106,'Cooking Oil','کھانے کا تیل','Oil, Ghee & Spices',590,650,'1 litre','1 لیٹر','🫗',19],
+[107,'Pure Desi Ghee','خالص دیسی گھی','Oil, Ghee & Spices',980,0,'500 g','500 گرام','🧈',12],
+[108,'Fresh Milk','تازہ دودھ','Dairy & Eggs',250,0,'1 litre','1 لیٹر','🥛',30],
+[109,'Farm Eggs','فارم کے انڈے','Dairy & Eggs',330,0,'12 pack','12 عدد','🥚',24],
+[110,'White Bread','سفید ڈبل روٹی','Bakery & Biscuits',150,0,'1 loaf','ایک پیکٹ','🍞',15],
+[111,'Chocolate Biscuits','چاکلیٹ بسکٹ','Snacks & Sweets',120,0,'1 pack','ایک پیکٹ','🍪',60],
+[112,'Orange Juice','مالٹے کا جوس','Beverages',280,0,'1 litre','1 لیٹر','🧃',18],
+[113,'Green Tea','سبز چائے','Beverages',390,0,'1 box','ایک ڈبہ','🍵',21],
+[114,'Laundry Detergent','کپڑے دھونے کا پاؤڈر','Cleaning Supplies',520,0,'1 pack','ایک پیکٹ','🧺',16],
+[115,'Dishwashing Liquid','برتن دھونے کا لیکوئڈ','Cleaning Supplies',230,0,'500 ml','500 ملی لیٹر','🧼',27],
+[116,'Shampoo','شیمپو','Personal Care',450,0,'400 ml','400 ملی لیٹر','🧴',20],
+[117,'Notebook Set','کاپیوں کا سیٹ','Stationery',260,0,'3 pack','3 عدد','📒',33],
+[118,'Phone Charger Cable','موبائل چارجر کیبل','Mobile Accessories',390,0,'1 piece','ایک عدد','🔌',14],
+[119,'Kitchen Storage Box','باورچی خانے کا ڈبہ','Household & Kitchen',340,0,'1 piece','ایک عدد','🥡',11],
+[120,'Baby Wipes','بچوں کے وائپس','Baby Products',280,0,'1 pack','ایک پیکٹ','🧻',0]
+].map(a=>({id:a[0],name:a[1],nameUr:a[2],category:a[3],price:a[4],oldPrice:a[5],unit:a[6],unitUr:a[7],emoji:a[8],stock:a[9],featured:a[0]<105,description:'',descriptionUr:''}));
+let products=load('megamart_products_v1',seed);
+products=products.map(p=>{const s=seed.find(x=>x.id===p.id);return {...p,nameUr:p.nameUr||(s&&s.nameUr)||'',unitUr:p.unitUr||(s&&s.unitUr)||'',descriptionUr:p.descriptionUr||''}});
+let settings={whatsapp:'923126553074',phone:'+92 312 6553074',delivery:200,freeDelivery:3000,minOrder:0,adminPassword:'ChangeMe-2026',...load('megamart_settings_v1',{})};
+let cart=load('megamart_cart_v1',[]),orders=load('megamart_orders_v1',[]),customers=load('megamart_customers_v1',[]),currentUser=load('megamart_current_user_v1',null),reviews=load('megamart_reviews_v1',{});
+let accountMode='signup',activeTab='overview',editingId=null,toastTimer;
+const saveAll=()=>{save('megamart_products_v1',products);save('megamart_settings_v1',settings);save('megamart_cart_v1',cart);save('megamart_orders_v1',orders);save('megamart_customers_v1',customers);save('megamart_current_user_v1',currentUser);save('megamart_reviews_v1',reviews)};
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600)}
+function pname(p){return language==='ur'?(p.nameUr||p.name):p.name}
+function punit(p){return language==='ur'?(p.unitUr||p.unit):p.unit}
+function pdesc(p){return language==='ur'?(p.descriptionUr||p.description||''):(p.description||'')}
+function catName(c){const x=CATEGORIES.find(v=>v[0]===c);return x?(language==='ur'?x[1]:x[0]):c}
+function cartProduct(id){return products.find(p=>p.id===Number(id))}
+function sizes(p){return Array.isArray(p.sizes)?p.sizes.filter(s=>s.active!==false):[]}
+function variant(p,size){return sizes(p).find(s=>s.label===size)}
+function stockFor(p,size){return sizes(p).length?Number(variant(p,size)?.stock)||0:Number(p.stock)||0}
+function itemPrice(i){const p=cartProduct(i.id),v=p&&variant(p,i.size||'');return v&&Number(v.price)>0?Number(v.price):Number(p?.price)||0}
+function key(i){return i.id+'_'+(i.size||'')}
+function count(){return cart.reduce((n,i)=>n+i.qty,0)}
+function sub(){return cart.reduce((n,i)=>n+itemPrice(i)*i.qty,0)}
+function fee(){return sub()&&sub()<settings.freeDelivery?Number(settings.delivery):0}
+function signed(){return !!currentUser?.email}
+function categoryIcon(n){return CATEGORIES.find(c=>c[0]===n)?.[2]||'🛍️'}
+function renderCategories(){
+ $('categoryGrid').innerHTML=CATEGORIES.map(c=>`<button class="category" data-category="${esc(c[0])}"><div class="cat-icon">${c[2]}</div><strong>${esc(language==='ur'?c[1]:c[0])}</strong></button>`).join('');
+ const selected=$('categoryFilter').value;
+ const all=[...new Set([...CATEGORIES.map(c=>c[0]),...products.map(p=>p.category)])];
+ $('categoryFilter').innerHTML=`<option value="">${tr('allProducts')}</option>`+all.map(c=>`<option value="${esc(c)}">${esc(catName(c))}</option>`).join('');
+ $('categoryFilter').value=selected;
+}
+function filters(){return {q:($('inlineSearch').value||$('searchInput').value).trim().toLowerCase(),cat:$('categoryFilter').value,sort:$('sortFilter').value,deal:$('dealFilter').value}}
+function renderProducts(){
+ const f=filters();
+ let list=products.filter(p=>(!f.q||[p.name,p.nameUr,p.category,p.description,p.descriptionUr].join(' ').toLowerCase().includes(f.q))&&(!f.cat||p.category===f.cat)&&(f.deal!=='sale'||p.oldPrice>p.price)&&(f.deal!=='stock'||Number(p.stock)>0||sizes(p).some(s=>s.stock>0)));
+ if(f.sort==='price-low')list.sort((a,b)=>a.price-b.price);
+ if(f.sort==='price-high')list.sort((a,b)=>b.price-a.price);
+ if(f.sort==='name')list.sort((a,b)=>pname(a).localeCompare(pname(b)));
+ if(f.sort==='featured')list.sort((a,b)=>Number(b.featured)-Number(a.featured));
+ $('resultCount').textContent=list.length+' '+(language==='ur'?'مصنوعات':'products');
+ if(!list.length){$('productGrid').innerHTML=`<div class="empty"><h3>${tr('noResults')}</h3></div>`;return}
+ $('productGrid').innerHTML=list.map(p=>{
+  const ss=sizes(p),has=ss.length,available=has?ss.some(s=>Number(s.stock)>0):Number(p.stock)>0;
+  return `<article class="product">
+   <div class="product-art">${p.oldPrice>p.price?`<span class="sale">${Math.round((p.oldPrice-p.price)/p.oldPrice*100)}% OFF</span>`:''}${p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="${esc(pname(p))}" onerror="this.style.display='none'">`:`<span>${esc(p.emoji||categoryIcon(p.category))}</span>`}</div>
+   <div class="product-cat">${esc(catName(p.category))}</div><h3>${esc(pname(p))}</h3>
+   ${pdesc(p)?`<div class="product-meta">${esc(pdesc(p))}</div>`:''}
+   <div class="product-meta">${esc(punit(p)||'')}</div><div class="product-meta">${available?tr('inStock'):tr('outStock')}</div>
+   <div class="price-row"><span class="price">${money(p.price)}</span>${p.oldPrice>p.price?`<span class="old-price">${money(p.oldPrice)}</span>`:''}</div>
+   <div class="product-options">${has?`<label>${tr('selectSize')}<select data-size="${p.id}"><option value="">${tr('chooseSize')}</option>${ss.map(s=>`<option value="${esc(s.label)}" ${s.stock<=0?'disabled':''}>${esc(s.label)}${s.stock<=0?' - '+tr('unavailable'):''}</option>`).join('')}</select></label>`:''}
+   <label>${tr('quantity')}<input type="number" min="1" max="${has?999:p.stock}" value="1" data-product-qty="${p.id}" ${!available?'disabled':''}></label></div>
+   <div class="add-row"><button class="btn btn-primary btn-small" data-add="${p.id}" ${!available?'disabled':''}>${available?'＋ '+tr('add'):tr('unavailable')}</button></div>
+  </article>`;
+ }).join('');
+}
+function renderCart(){
+ cart=cart.filter(i=>cartProduct(i.id));
+ cart=cart.filter(i=>stockFor(cartProduct(i.id),i.size||'')>0);
+ cart.forEach(i=>i.qty=Math.min(Math.max(1,Number(i.qty)||1),stockFor(cartProduct(i.id),i.size||'')));
+ $('cartCount').textContent=count();saveAll();
+ if(!cart.length){$('cartBody').innerHTML=`<div class="empty"><div style="font-size:40px">🛍️</div><h3>${tr('empty')}</h3><button class="btn btn-primary" id="continueShopping">${tr('start')}</button></div>`;return}
+ $('cartBody').innerHTML=`<div class="cart-items">${cart.map(i=>{const p=cartProduct(i.id),price=itemPrice(i),st=stockFor(p,i.size||'');return `<div class="cart-item"><div class="cart-thumb">${esc(p.emoji||'🛍️')}</div><div><h4>${esc(pname(p))}</h4>${i.size?`<div class="cart-size">${tr('size')}: ${esc(i.size)}</div>`:''}<small>${money(price)} · ${esc(punit(p)||'')}</small><div class="qty"><button data-qty="-1" data-key="${esc(key(i))}">−</button><strong>${i.qty}</strong><button data-qty="1" data-key="${esc(key(i))}" ${i.qty>=st?'disabled':''}>＋</button><button data-remove="${esc(key(i))}" style="width:auto;color:#b64242">${tr('remove')}</button></div></div><strong>${money(price*i.qty)}</strong></div>`}).join('')}</div>
+ <div class="cart-total"><div class="total-line"><span>${tr('subtotal')}</span><strong>${money(sub())}</strong></div><div class="total-line"><span>${tr('delivery')}</span><strong>${fee()===0?tr('free'):money(fee())}</strong></div><div class="total-line grand"><span>${tr('total')}</span><strong>${money(sub()+fee())}</strong></div><button class="btn btn-primary" id="goCheckout">${tr('continue')} →</button><button class="btn btn-light" id="cartWhatsApp">${tr('whatsappOrder')} ☏</button></div>`;
+}
+function addToCart(id,qty,size=''){
+ if(!signed()){openAccount('signup');toast(tr('accountRequired'));return}
+ const p=cartProduct(id);if(!p)return;
+ if(sizes(p).length&&!size){toast(tr('chooseFirst'));return}
+ const st=stockFor(p,size);qty=Math.max(1,Math.floor(Number(qty)||1));
+ if(st<=0||qty>st){toast(tr('stockError'));return}
+ const old=cart.find(i=>i.id===p.id&&(i.size||'')===size);
+ if(old){if(old.qty+qty>st){toast(tr('stockError'));return}old.qty+=qty}else cart.push({id:p.id,qty,size});
+ saveAll();renderCart();toast(pname(p)+' '+tr('added'));
+}
+function changeQty(k,d){const i=cart.find(x=>key(x)===k);if(!i)return;const next=i.qty+d,st=stockFor(cartProduct(i.id),i.size||'');if(next<=0)cart=cart.filter(x=>key(x)!==k);else if(next>st)toast(tr('stockError'));else i.qty=next;saveAll();renderCart()}
+function openOverlay(id){$(id).classList.add('show');document.body.style.overflow='hidden'}
+function closeOverlay(id){$(id).classList.remove('show');if(!document.querySelector('.overlay.show'))document.body.style.overflow=''}
+function openCart(){renderCart();openOverlay('cartOverlay')}
+function waUrl(msg){const n=String(settings.whatsapp||'').replace(/\D/g,'');if(n.length<10){toast('Set your WhatsApp number in Admin settings.');return null}return 'https://wa.me/'+n+'?text='+encodeURIComponent(msg)}
+function openWhatsApp(msg){const u=waUrl(msg);if(u)window.open(u,'_blank','noopener,noreferrer')}
+function orderLines(){return cart.map(i=>{const p=cartProduct(i.id);return p?`• ${pname(p)}${i.size?' ('+tr('size')+': '+i.size+')':''} × ${i.qty} — ${money(itemPrice(i)*i.qty)}`:''}).filter(Boolean).join('\n')}
+function cartMessage(){return `Hello Mega Mart! I would like to order:\n\n${orderLines()}\n\n${tr('subtotal')}: ${money(sub())}\n${tr('delivery')}: ${fee()===0?tr('free'):money(fee())}\n${tr('total')}: ${money(sub()+fee())}\n\nPlease confirm availability and delivery.`}
+function renderCheckout(){
+ if(!signed()){openAccount('signup');return}
+ if(!cart.length){$('checkoutBody').innerHTML=`<div class="empty">${tr('empty')}</div>`;return}
+ $('checkoutBody').innerHTML=`<div class="notice">${tr('orderNotice')}</div><form id="checkoutForm">
+ <div class="field"><label>${tr('customerName')} *</label><input id="coName" required value="${esc(currentUser.name||'')}"></div>
+ <div class="field"><label>${tr('phone')} *</label><input id="coPhone" required value="${esc(currentUser.phone||'')}"></div>
+ <div class="field"><label>${tr('address')} *</label><textarea id="coAddress" required></textarea></div>
+ <div class="field"><label>${tr('city')} *</label><input id="coCity" required></div>
+ <div class="field"><label>${tr('payment')} *</label><select id="coPayment"><option value="COD">${tr('cod')}</option><option value="WhatsApp confirmation">${tr('whatsappConfirm')}</option></select></div>
+ <div class="field"><label>${tr('instructions')}</label><textarea id="coInstructions"></textarea></div>
+ <div class="cart-total"><div class="total-line"><span>${tr('subtotal')}</span><strong>${money(sub())}</strong></div><div class="total-line"><span>${tr('delivery')}</span><strong>${fee()===0?tr('free'):money(fee())}</strong></div><div class="total-line grand"><span>${tr('total')}</span><strong>${money(sub()+fee())}</strong></div></div>
+ <button class="btn btn-primary" style="width:100%;margin-top:12px">${tr('orderRequest')}</button></form>`;
+}
+function placeOrder(e){
+ e.preventDefault();
+ const customer={name:$('coName').value.trim(),phone:$('coPhone').value.trim(),address:$('coAddress').value.trim(),city:$('coCity').value.trim(),payment:$('coPayment').value,instructions:$('coInstructions').value.trim()};
+ if(!/^(\+?92|0)?3\d{9}$/.test(customer.phone.replace(/[\s-]/g,''))){toast(tr('phoneError'));return}
+ if(!customer.name||!customer.address||!customer.city){toast(tr('requiredError'));return}
+ for(const i of cart){if(!cartProduct(i.id)||stockFor(cartProduct(i.id),i.size||'')<i.qty){toast(tr('stockChanged'));renderCart();renderCheckout();return}}
+ const id='MM-'+Date.now().toString().slice(-8);
+ const items=cart.map(i=>{const p=cartProduct(i.id);return {id:p.id,name:p.name,nameUr:p.nameUr,size:i.size||'',qty:i.qty,unitPrice:itemPrice(i),total:itemPrice(i)*i.qty}});
+ const order={id,createdAt:new Date().toISOString(),customer,items,subtotal:sub(),delivery:fee(),total:sub()+fee(),status:'Pending confirmation'};
+ orders.unshift(order);
+ if(customer.payment==='COD')items.forEach(i=>{const p=cartProduct(i.id);if(i.size){const v=p.sizes.find(s=>s.label===i.size);if(v)v.stock=Math.max(0,v.stock-i.qty)}else p.stock=Math.max(0,p.stock-i.qty)});
+ const msg=`Hello Mega Mart! Please confirm my order.\nReference: ${id}\nCustomer: ${customer.name}\nPhone: ${customer.phone}\nAddress: ${customer.address}, ${customer.city}\nPayment: ${customer.payment}\n\n${items.map(i=>`• ${language==='ur'?(i.nameUr||i.name):i.name}${i.size?' ('+tr('size')+': '+i.size+')':''} × ${i.qty} — ${money(i.total)}`).join('\n')}\n\n${tr('total')}: ${money(order.total)}\n${customer.instructions||''}`;
+ cart=[];saveAll();renderProducts();renderCart();
+ $('checkoutBody').innerHTML=`<div class="success-note"><strong>${tr('orderSuccess')}</strong><br>Reference: ${esc(id)}</div><p>${tr('sendOrder')}</p><button class="btn btn-primary" id="sendOrderWhatsApp" style="width:100%">${tr('sendOrder')}</button><button class="btn btn-light" id="finishOrder" style="width:100%;margin-top:9px">${tr('finish')}</button>`;
+ $('sendOrderWhatsApp').onclick=()=>openWhatsApp(msg);$('finishOrder').onclick=()=>{closeOverlay('checkoutOverlay');$('products').scrollIntoView()};
+ toast(tr('orderSaved'));
+}
+function openAccount(mode='signup'){accountMode=mode;renderAccountMode();openOverlay('accountOverlay')}
+function renderAccountMode(){
+ document.querySelectorAll('[data-account-mode]').forEach(b=>b.classList.toggle('active',b.dataset.accountMode===accountMode));
+ $('accountNameField').style.display=accountMode==='signup'?'grid':'none';$('accountPhoneField').style.display=accountMode==='signup'?'grid':'none';
+ $('accountName').required=accountMode==='signup';$('accountPhone').required=accountMode==='signup';
+ $('accountSubmit').textContent=tr(accountMode);$('accountPassword').value='';
+}
+function handleAccount(e){
+ e.preventDefault();const name=$('accountName').value.trim(),email=$('accountEmail').value.trim().toLowerCase(),phone=$('accountPhone').value.trim(),password=$('accountPassword').value;
+ if(accountMode==='signup'){
+  if(customers.some(u=>u.email===email)){toast(tr('emailExists'));accountMode='login';renderAccountMode();$('accountEmail').value=email;return}
+  const user={id:Date.now(),name,email,phone,password};customers.push(user);currentUser={id:user.id,name,email,phone};
+ }else{const user=customers.find(u=>u.email===email&&u.password===password);if(!user){toast(tr('loginError'));return}currentUser={id:user.id,name:user.name,email:user.email,phone:user.phone}}
+ saveAll();$('accountBtn').textContent='♙ '+currentUser.name.split(' ')[0];$('signOutBtn').style.display='block';closeOverlay('accountOverlay');renderProducts();toast(tr('signedIn'));
+}
+function signOut(){currentUser=null;saveAll();$('accountBtn').textContent='♙ '+tr('account');$('signOutBtn').style.display='none';closeOverlay('accountOverlay');toast(tr('signedOut'))}
+function openAdmin(){
+ if(sessionStorage.getItem('megamart_admin_unlocked')!=='yes'){const pass=prompt(tr('passwordPrompt'));if(pass!==settings.adminPassword){if(pass!==null)toast(tr('wrongPassword'));return}sessionStorage.setItem('megamart_admin_unlocked','yes')}
+ activeTab='overview';renderAdmin();$('adminModal').classList.add('show');document.body.style.overflow='hidden';
+}
+function closeAdmin(){$('adminModal').classList.remove('show');document.body.style.overflow=''}
+function renderAdmin(){
+ document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===activeTab));
+ const c=$('adminContent');
+ if(activeTab==='overview'){c.innerHTML=`<div class="admin-stats"><div class="stat">${tr('orders')}<strong>${orders.length}</strong></div><div class="stat">${tr('product')}<strong>${products.length}</strong></div><div class="stat">${tr('outStock')}<strong>${products.filter(p=>p.stock<=0&&!sizes(p).some(s=>s.stock>0)).length}</strong></div><div class="stat">${tr('total')}<strong>${money(orders.reduce((n,o)=>n+o.total,0))}</strong></div></div>`}
+ if(activeTab==='inventory'){
+  c.innerHTML=`<h3>${editingId?tr('edit'):tr('addProduct')}</h3><form id="productForm" class="admin-product-form">
+  <input id="pName" placeholder="${tr('productName')}" required><input id="pNameUr" placeholder="${tr('productNameUr')}" required>
+  <select id="pCategory">${CATEGORIES.map(x=>`<option value="${esc(x[0])}">${esc(catName(x[0]))}</option>`).join('')}</select>
+  <input id="pPrice" type="number" min="0" placeholder="${tr('price')}" required><input id="pOldPrice" type="number" min="0" placeholder="${tr('oldPrice')}">
+  <input id="pUnit" placeholder="${tr('unit')}" value="1 piece"><input id="pUnitUr" placeholder="پیمانہ (اردو)" value="ایک عدد">
+  <input id="pStock" type="number" min="0" placeholder="${tr('stock')}" value="10"><input id="pEmoji" placeholder="${tr('emoji')}" value="🛍️">
+  <input id="pImage" placeholder="${tr('image')}">
+  <input id="pDescription" placeholder="${tr('descriptionEn')}"><input id="pDescriptionUr" placeholder="${tr('descriptionUr')}">
+  <select id="pSizeType"><option value="">${tr('noSizes')}</option><option value="clothing">${tr('clothing')}</option><option value="shoes">${tr('shoes')}</option><option value="kids">${tr('kids')}</option><option value="custom">${tr('custom')}</option></select>
+  <input id="pSizes" placeholder="${tr('sizeExample')}">
+  <label><input type="checkbox" id="pFeatured"> ${tr('featuredLabel')}</label>
+  <button class="btn btn-primary" type="submit">${editingId?tr('saveChanges'):tr('addProduct')}</button><button class="btn btn-light" type="button" id="cancelEdit">${tr('cancel')}</button></form>
+  <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>${tr('product')}</th><th>${tr('price')}</th><th>${tr('stock')}</th><th>${tr('actions')}</th></tr></thead><tbody>
+  ${products.map(p=>`<tr><td>${esc(pname(p))}</td><td>${money(p.price)}</td><td>${sizes(p).length?sizes(p).map(s=>esc(s.label)+': '+s.stock).join(', '):p.stock}</td><td><button class="btn btn-light btn-small" data-edit="${p.id}">${tr('edit')}</button> <button class="btn btn-outline btn-small" data-delete="${p.id}">${tr('delete')}</button></td></tr>`).join('')}
+  </tbody></table></div>`;
+  if(editingId){const p=cartProduct(editingId);if(p){$('pName').value=p.name;$('pNameUr').value=p.nameUr||'';$('pCategory').value=p.category;$('pPrice').value=p.price;$('pOldPrice').value=p.oldPrice||'';$('pUnit').value=p.unit||'';$('pUnitUr').value=p.unitUr||'';$('pStock').value=p.stock||0;$('pEmoji').value=p.emoji||'🛍️';$('pImage').value=p.imageUrl||'';$('pDescription').value=p.description||'';$('pDescriptionUr').value=p.descriptionUr||'';$('pFeatured').checked=!!p.featured;$('pSizeType').value=p.sizeType||'';$('pSizes').value=(p.sizes||[]).map(s=>s.label+':'+s.stock).join(', ')}}
+ }
+ if(activeTab==='settings')c.innerHTML=`<h3>${tr('storeSettings')}</h3><form id="settingsForm" style="max-width:550px">
+ ${field('sWhatsapp',tr('whatsappNumber'),settings.whatsapp)}${field('sPhone',tr('displayPhone'),settings.phone)}${field('sPassword',tr('adminPassword'),settings.adminPassword,'password')}
+ ${field('sDelivery',tr('deliveryCharge'),settings.delivery,'number')}${field('sFree',tr('freeFrom'),settings.freeDelivery,'number')}${field('sMinimum',tr('minimumOrder'),settings.minOrder,'number')}
+ <button class="btn btn-primary">${tr('save')}</button></form>`;
+ if(activeTab==='orders')c.innerHTML=`<h3>${tr('savedOrders')}</h3>${orders.length?`<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>${tr('orders')}</th><th>${tr('customer')}</th><th>${tr('items')}</th><th>${tr('total')}</th><th>${tr('status')}</th></tr></thead><tbody>${orders.map(o=>`<tr><td>${esc(o.id)}</td><td>${esc(o.customer.name)}<br>${esc(o.customer.phone)}</td><td>${o.items.map(i=>`${esc(language==='ur'?(i.nameUr||i.name):i.name)} ${i.size?'('+esc(i.size)+')':''} × ${i.qty}`).join('<br>')}</td><td>${money(o.total)}</td><td><select data-status="${esc(o.id)}">${[['Pending confirmation','pending'],['Confirmed','confirmed'],['Processing','processing'],['Shipped','shipped'],['Delivered','delivered'],['Cancelled','cancelled']].map(([v,k])=>`<option value="${v}" ${o.status===v?'selected':''}>${tr(k)}</option>`).join('')}</select></td></tr>`).join('')}</tbody></table></div>`:tr('noOrders')}`;
+}
+function field(id,label,value,type='text'){return `<div class="field"><label>${esc(label)}</label><input id="${id}" type="${type}" value="${esc(value)}"></div>`}
+function saveProduct(e){
+ e.preventDefault();const raw=$('pSizes').value.trim();let ss=[];
+ if(raw)ss=raw.split(',').map(x=>{const n=x.lastIndexOf(':');if(n<1)return null;const label=x.slice(0,n).trim(),stock=Math.max(0,Number(x.slice(n+1))||0);return label?{label,stock,active:true,price:0}:null}).filter(Boolean);
+ if($('pSizeType').value&&!ss.length){toast(tr('sizeExample'));return}
+ const p={id:editingId||Date.now(),name:$('pName').value.trim(),nameUr:$('pNameUr').value.trim(),category:$('pCategory').value,price:Number($('pPrice').value),oldPrice:Number($('pOldPrice').value)||0,unit:$('pUnit').value.trim()||'1 piece',unitUr:$('pUnitUr').value.trim()||'ایک عدد',stock:Math.max(0,Number($('pStock').value)||0),emoji:$('pEmoji').value.trim()||'🛍️',imageUrl:$('pImage').value.trim(),description:$('pDescription').value.trim(),descriptionUr:$('pDescriptionUr').value.trim(),featured:$('pFeatured').checked,sizeType:$('pSizeType').value,sizes:ss};
+ if(!p.name||!p.nameUr||!Number.isFinite(p.price)||p.price<0){toast(tr('requiredError'));return}
+ if(editingId){products=products.map(x=>x.id===editingId?p:x);toast(tr('productUpdated'))}else{products.unshift(p);toast(tr('productAdded'))}
+ editingId=null;saveAll();renderCategories();renderProducts();renderAdmin();
+}
+function editProduct(id){editingId=Number(id);activeTab='inventory';renderAdmin()}
+function deleteProduct(id){if(!confirm(tr('confirmDelete')))return;products=products.filter(p=>p.id!==Number(id));cart=cart.filter(i=>i.id!==Number(id));saveAll();renderProducts();renderCart();renderAdmin();toast(tr('productDeleted'))}
+
+$('year').textContent=new Date().getFullYear();$('footerPhone').textContent=settings.phone;
+if(signed()){$('accountBtn').textContent='♙ '+currentUser.name.split(' ')[0];$('signOutBtn').style.display='block'}
+renderCategories();renderProducts();renderCart();applyLanguage();
+$('languageToggle').onclick=()=>{language=language==='en'?'ur':'en';localStorage.setItem('megamart_language_v1',language);applyLanguage();toast(tr('languageChanged'))};
+$('searchForm').onsubmit=e=>{e.preventDefault();$('inlineSearch').value=$('searchInput').value;renderProducts();$('products').scrollIntoView({behavior:'smooth'})};
+$('inlineSearch').oninput=()=>{$('searchInput').value=$('inlineSearch').value;renderProducts()};
+['categoryFilter','sortFilter','dealFilter'].forEach(id=>$(id).onchange=renderProducts);
+$('categoryGrid').onclick=e=>{const b=e.target.closest('[data-category]');if(!b)return;$('categoryFilter').value=b.dataset.category;renderProducts();$('products').scrollIntoView({behavior:'smooth'})};
+$('productGrid').onclick=e=>{const b=e.target.closest('[data-add]');if(!b)return;const id=Number(b.dataset.add),qty=Number(document.querySelector(`[data-product-qty="${id}"]`)?.value||1),size=document.querySelector(`[data-size="${id}"]`)?.value||'';addToCart(id,qty,size)};
+$('cartOpen').onclick=openCart;
+$('cartBody').onclick=e=>{
+ const q=e.target.closest('[data-qty]'),r=e.target.closest('[data-remove]');
+ if(q)changeQty(q.dataset.key,Number(q.dataset.qty));
+ if(r){cart=cart.filter(i=>key(i)!==r.dataset.remove);saveAll();renderCart()}
+ if(e.target.id==='continueShopping')closeOverlay('cartOverlay');
+ if(e.target.id==='goCheckout'){closeOverlay('cartOverlay');renderCheckout();openOverlay('checkoutOverlay')}
+ if(e.target.id==='cartWhatsApp')openWhatsApp(cartMessage());
+};
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeOverlay(b.dataset.close));
+$('checkoutBody').onsubmit=e=>{if(e.target.id==='checkoutForm')placeOrder(e)};
+$('accountBtn').onclick=()=>openAccount('login');
+document.querySelector('#accountOverlay .admin-tabs').onclick=e=>{const b=e.target.closest('[data-account-mode]');if(b){accountMode=b.dataset.accountMode;renderAccountMode()}};
+$('accountForm').onsubmit=handleAccount;$('signOutBtn').onclick=signOut;
+$('floatingWhatsApp').onclick=()=>openWhatsApp('Hello Mega Mart! I need help with shopping.');
+$('footerWhatsApp').onclick=e=>{e.preventDefault();openWhatsApp('Hello Mega Mart! I need help with shopping.')};
+$('newsletterForm').onsubmit=e=>{e.preventDefault();toast(tr('newsletterThanks'));e.target.reset()};
+$('adminOpen').onclick=e=>{e.preventDefault();openAdmin()};$('adminClose').onclick=closeAdmin;
+$('adminModal').onclick=e=>{if(e.target===$('adminModal'))closeAdmin()};
+document.querySelector('#adminModal .admin-tabs').onclick=e=>{const b=e.target.closest('[data-tab]');if(!b)return;activeTab=b.dataset.tab;editingId=null;renderAdmin()};
+$('adminContent').onsubmit=e=>{
+ if(e.target.id==='productForm')saveProduct(e);
+ if(e.target.id==='settingsForm'){e.preventDefault();settings={...settings,whatsapp:$('sWhatsapp').value.trim(),phone:$('sPhone').value.trim(),adminPassword:$('sPassword').value.trim()||settings.adminPassword,delivery:Math.max(0,Number($('sDelivery').value)||0),freeDelivery:Math.max(0,Number($('sFree').value)||0),minOrder:Math.max(0,Number($('sMinimum').value)||0)};saveAll();$('footerPhone').textContent=settings.phone;toast(tr('settingsSaved'));renderAdmin()}
+};
+$('adminContent').onclick=e=>{const a=e.target.closest('[data-edit]'),d=e.target.closest('[data-delete]');if(a)editProduct(a.dataset.edit);if(d)deleteProduct(d.dataset.delete);if(e.target.id==='cancelEdit'){editingId=null;renderAdmin()}};
+$('adminContent').onchange=e=>{if(e.target.matches('[data-status]')){const o=orders.find(x=>x.id===e.target.dataset.status);if(o){o.status=e.target.value;saveAll();toast(tr('statusUpdated'))}}};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.overlay.show').forEach(x=>closeOverlay(x.id));closeAdmin()}});
+})();
+</script>
+</body>
+</html>
